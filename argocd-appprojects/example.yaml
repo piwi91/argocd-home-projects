@@ -10,5 +10,6 @@ spec:
   destinations:
   - namespace: example
     server: https://kubernetes.default.svc
+  - namespace: guestbook
   sourceRepos:
   - '*'

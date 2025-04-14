@@ -5,7 +5,7 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    namespace: example
+    namespace: guestbook
     server: https://kubernetes.default.svc
   project: example-project
   source:

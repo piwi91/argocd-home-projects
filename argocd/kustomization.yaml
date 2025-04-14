@@ -4,11 +4,12 @@ kind: Kustomization
 namespace: argocd
 
 resources:
+- base/argocd-namespace.yaml
 - base/certmanager-certificate.yaml
 - base/traefik-ingressroute.yaml
 - base/argocd-repositories.yaml
 - base/argocd-applications.yaml
-- https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml
+- https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
 patches:
 - path: overlays/argocd-cm.yaml
@@ -16,4 +17,4 @@ patches:
 
 images:
 - name: quay.io/argoproj/argocd
-  newTag: v2.4.16
+  newTag: v2.14.6
