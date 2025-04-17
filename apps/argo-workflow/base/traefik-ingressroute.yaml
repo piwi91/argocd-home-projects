@@ -49,6 +49,7 @@ spec:
         - name: allow-local-only
       services:
         - name: argo-server
+          scheme: https
           port: 2746
   tls:
     secretName: argowf-tls
