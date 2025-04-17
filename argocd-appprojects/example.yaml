@@ -8,7 +8,7 @@ spec:
   - group: '*'
     kind: '*'
   destinations:
-  - namespace: example
+  - namespace: bookinfo
     server: https://kubernetes.default.svc
   - namespace: guestbook
     server: https://kubernetes.default.svc
