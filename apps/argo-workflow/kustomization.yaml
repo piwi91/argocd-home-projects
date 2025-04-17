@@ -6,4 +6,9 @@ namespace: argowf
 resources:
 - base/certmanager-certificate.yaml
 - base/traefik-ingressroute.yaml
+- base/argocd-dex-secret.json
 - https://github.com/argoproj/argo-workflows/releases/download/v3.6.5/install.yaml
+
+patches:
+- path: overlays/argo-server.yaml
+- path: overlays/workflow-controller-configmap.yaml

@@ -9,11 +9,13 @@ resources:
 - base/traefik-ingressroute.yaml
 - base/argocd-repositories.yaml
 - base/argocd-applications.yaml
+- base/argocd-dex-argo-workflow-sso-secret.json
 - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
 patches:
 - path: overlays/argocd-cm.yaml
 - path: overlays/argocd-cmd-params-cm.yaml
+- path: overlays/argocd-dex-server.yaml
 
 images:
 - name: quay.io/argoproj/argocd
