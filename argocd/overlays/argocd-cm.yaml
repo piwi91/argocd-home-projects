@@ -6,6 +6,15 @@ data:
   url: https://argocd.brandt.widdershoven.nl
   users.anonymous.enabled: 'false'
   dex.config: |
+    connectors:
+    - type: github
+      id: github
+      name: GitHub
+      config:
+        clientID: Ov23liZlTFTqyGV53ypp
+        clientSecret: $github-app:applicationSecret
+        orgs:
+        - name: piwi91
     # Setting staticClients allows Argo Workflows to use Argo CD's Dex installation for authentication
     staticClients:
       # This is the OIDC client ID in plaintext

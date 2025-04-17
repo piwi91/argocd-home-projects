@@ -10,6 +10,7 @@ resources:
 - base/argocd-repositories.yaml
 - base/argocd-applications.yaml
 - base/argocd-dex-argo-workflow-sso-secret.json
+- base/argocd-github-app-secret.json
 - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
 patches:
