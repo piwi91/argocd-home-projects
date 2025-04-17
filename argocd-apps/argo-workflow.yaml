@@ -1,16 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sample-app
+  name: argo-workflow
   namespace: argocd
 spec:
   destination:
-    namespace: guestbook
+    namespace: argowf
     server: https://kubernetes.default.svc
-  project: example-project
+  project: default
   source:
-    path: bookinfo-example/kustomize
-    repoURL: https://github.com/digitalocean/kubernetes-sample-apps.git
+    path: apps/argo-worklow
+    repoURL: https://github.com/piwi91/argocd-home-projects.git
     targetRevision: HEAD
   syncPolicy:
     syncOptions:
