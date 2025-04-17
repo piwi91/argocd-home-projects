@@ -48,7 +48,7 @@ spec:
       middlewares:
         - name: allow-local-only
       services:
-        - name: argocd-server
-          port: 80
+        - name: argo-server
+          port: 2746
   tls:
     secretName: argowf-tls
