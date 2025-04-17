@@ -9,7 +9,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: apps/argo-worklow
+    path: apps/argo-workflow
     repoURL: https://github.com/piwi91/argocd-home-projects.git
     targetRevision: HEAD
   syncPolicy:
