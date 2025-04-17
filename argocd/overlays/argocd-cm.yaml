@@ -11,7 +11,7 @@ data:
       id: github
       name: GitHub
       config:
-        clientID: Ov23liZlTFTqyGV53ypp
+        clientID: Ov23li2eK6mw8balwH18
         clientSecret: $github-app:applicationSecret
         orgs:
         - name: piwi91
