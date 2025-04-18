@@ -15,6 +15,7 @@ data:
         clientSecret: $github-app:applicationSecret
         orgs:
         - name: widdershoven
+        teamNameField: slug
     # Setting staticClients allows Argo Workflows to use Argo CD's Dex installation for authentication
     staticClients:
       # This is the OIDC client ID in plaintext
