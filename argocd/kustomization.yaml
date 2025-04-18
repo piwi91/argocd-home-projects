@@ -15,6 +15,7 @@ resources:
 
 patches:
 - path: overlays/argocd-cm.yaml
+- path: overlays/argocd-rbac-cm.yaml
 - path: overlays/argocd-cmd-params-cm.yaml
 - path: overlays/argocd-dex-server.yaml
 
