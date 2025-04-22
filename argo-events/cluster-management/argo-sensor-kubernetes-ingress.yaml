@@ -1,0 +1,71 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: ingress-sn
+spec:
+  template:
+    serviceAccountName: kubernetes-ingress-manager-sa
+  dependencies:
+  - name: service
+    eventSourceName: ingress-es
+    eventName: ingress
+    transform:
+      jq: '.operation += if .type == "ADD" then "create" else if .type == "DELETE" then "delete" else "update" end end'
+  triggers:
+  - parameters:
+    - src:
+        dependencyName: service
+        dataKey: operation
+      dest: k8s.operation
+    template:
+      name: ingress
+      k8s:
+        operation: create
+        parameters:
+        - src:
+            dependencyName: service
+            dataKey: body.metadata.name
+          dest: metadata.name
+          operation: prepend
+        - src:
+            dependencyName: service
+            dataKey: body.metadata.annotations.deploy-ingress-class
+          dest: spec.ingressClassName
+        - src:
+            dependencyName: service
+            dataKey: body.metadata.annotations.deploy-ingress-host
+          dest: spec.rules.0.host
+        - src:
+            dependencyName: service
+            dataKey: body.metadata.name
+          dest: spec.rules.0.http.paths.0.backend.service.name
+        - src:
+            dependencyName: service
+            dataKey: body.spec.ports.0.port
+            useRawData: true
+          dest: spec.rules.0.http.paths.0.backend.service.port.number
+        source:
+          resource:
+            apiVersion: networking.k8s.io/v1
+            kind: Ingress
+            metadata:
+              name: -ing
+              namespace: argo-events-cluster-management
+            spec:
+              ingressClassName: __WILL_BE_REPLACED__
+              rules:
+              - host: __WILL_BE_REPLACED__
+                http:
+                  paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
+                      service:
+                        name: __WILL_BE_REPLACED__
+                        port:
+                          number: __WILL_BE_REPLACED__
+  - template:
+      name: logging
+      log:
+        intervalSeconds: 15
