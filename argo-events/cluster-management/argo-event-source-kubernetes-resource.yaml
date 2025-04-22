@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: ingress-es
+spec:
+  template:
+    serviceAccountName: kubernetes-event-listener-sa
+  resource:
+    ingress:
+      namespace: argo-events-cluster-management
+      group: ""
+      version: v1
+      resource: services
+      eventTypes: [ ADD, DELETE, UPDATE ]
+      filter:
+        fields:
+        - key: metadata.annotations.deploy-ingress-host
+          operation: =
+          value: ".+"
