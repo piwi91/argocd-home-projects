@@ -49,18 +49,18 @@ spec:
     - kind: Rule
       match: Host(`argocd.brandt.widdershoven.nl`)
       priority: 10
-      middlewares:
-        - name: allow-local-only-argocd
-          namespace: argocd
+      # middlewares:
+      #   - name: allow-local-only-argocd
+      #     namespace: argocd
       services:
         - name: argocd-server
           port: 80
     - kind: Rule
       match: Host(`argocd.brandt.widdershoven.nl`) && Header(`Content-Type`, `application/grpc`)
       priority: 11
-      middlewares:
-        - name: allow-local-only-argocd
-          namespace: argocd
+      # middlewares:
+      #   - name: allow-local-only-argocd
+      #     namespace: argocd
       services:
         - name: argocd-server
           port: 80
