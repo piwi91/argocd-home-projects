@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventBus
+metadata:
+  name: default
+spec:
+  jetstream:
+    version: 2.10.10 # available version in ConfigMap:argo-events-controller-config
+    replicas: 3
+    streamConfig: |
+      maxAge: 24h
+    persistence: # optional
+      storageClassName: nfs-client
+      accessMode: ReadWriteOnce
+      volumeSize: 10Gi

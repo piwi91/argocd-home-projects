@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argo-events
+  namespace: argocd
+spec:
+  destination:
+    namespace: argo-events-cluster-management
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: argo-events/cluster-management
+    repoURL: https://github.com/piwi91/argocd-home-projects.git
+    targetRevision: HEAD
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+    automated:
+      selfHeal: true
