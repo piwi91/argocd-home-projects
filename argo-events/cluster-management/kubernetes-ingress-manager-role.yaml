@@ -3,6 +3,6 @@ kind: Role
 metadata:
   name: kubernetes-ingress-manager-role
 rules:
-  - apiGroups: [""]
+  - apiGroups: ["networking.k8s.io"]
     resources: ["ingresses"]
     verbs: ["create", "get", "list", "watch", "update", "patch", "delete"]
