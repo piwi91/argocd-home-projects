@@ -1,0 +1,30 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: webhook-es
+spec:
+  webhook:
+    simple:
+      endpoint: /notify
+      port: "12000"
+      method: POST
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webhook-svc
+  labels:
+    app: webhook-svc
+  annotations:
+    deploy-ingress-host: webhook.brandt.widdershoven.nl
+    deploy-ingress-class: traefik
+    deploy-ingress-external: true
+spec:
+  type: ClusterIP
+  selector:
+    eventsource-name: webhook-es
+    owner-name: webhook-es
+  ports:
+  - port: 12000
+    targetPort: 12000
