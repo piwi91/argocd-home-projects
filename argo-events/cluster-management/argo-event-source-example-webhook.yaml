@@ -19,7 +19,7 @@ metadata:
   annotations:
     deploy-ingress-host: webhook.brandt.widdershoven.nl
     deploy-ingress-class: traefik
-    deploy-ingress-external: true
+    deploy-ingress-external: "true"
 spec:
   type: ClusterIP
   selector:
