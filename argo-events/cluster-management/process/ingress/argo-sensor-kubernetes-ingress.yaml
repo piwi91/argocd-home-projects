@@ -17,9 +17,12 @@ spec:
         else
           event.operation = "apply"
         end
+        # Start new annotations table that replaces the original annotations from the service body.metadata
+        annotations = {}
         if event.body.metadata.annotations["deploy-ingress-external"] ~= "true" then
-          event.body.metadata.annotations["traefik.ingress.kubernetes.io/router.middlewares"] = 'default-allow-local-only@kubernetescrd'
+          annotations["traefik.ingress.kubernetes.io/router.middlewares"] = 'default-allow-local-only@kubernetescrd'
         end
+        event.body.metadata.annotations = annotations
         return event
 
   triggers:
