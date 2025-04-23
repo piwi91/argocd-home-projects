@@ -5,6 +5,8 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: kubernetes-workflow-operator-sa
+  - kind: ServiceAccount
+    name: kubernetes-ingress-manager-sa
 roleRef:
   kind: Role
   name: kubernetes-workflow-operator-role
