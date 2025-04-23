@@ -11,8 +11,14 @@ spec:
     eventSourceName: ingress-es
     eventName: ingress
     transform:
-      jq: '.operation += if .type == "ADD" then "create" else if .type == "DELETE" then "delete" else "update" end end'
       script: |-
+        if event.operation == "ADD" then
+          event.operation = "create"
+        elseif event.operation == "DELETE"
+          event.operation = "delete"
+        else
+          event.operation = "update"
+        end
         if event.body.metadata.annotations["deploy-ingress-external"] != "true" then
           event.body.metadata.annotations["traefik.ingress.kubernetes.io/router.middlewares"] = 'default-allow-local-only@kubernetescrd'
         end
