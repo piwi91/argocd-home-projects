@@ -19,7 +19,7 @@ spec:
         else
           event.operation = "update"
         end
-        if event.body.metadata.annotations["deploy-ingress-external"] != "true" then
+        if event.body.metadata.annotations["deploy-ingress-external"] ~= "true" then
           event.body.metadata.annotations["traefik.ingress.kubernetes.io/router.middlewares"] = 'default-allow-local-only@kubernetescrd'
         end
         return event
