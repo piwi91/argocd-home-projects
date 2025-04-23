@@ -6,17 +6,16 @@ spec:
   templates:
   - name: apply-ingress-template
     inputs:
-      arguments:
-        parameters:
-        - name: operation
-          value: create
-        - name: ingressClassName
-          value: traefik
-        - name: host
-        - name: serviceName
-        - name: servicePort
-        - name: annotations
-          value: "{}"
+      parameters:
+      - name: operation
+        value: create
+      - name: ingressClassName
+        value: traefik
+      - name: host
+      - name: serviceName
+      - name: servicePort
+      - name: annotations
+        value: "{}"
     resource:
       action: "{{ inputs.parameters.operation }}"
       manifest: |
