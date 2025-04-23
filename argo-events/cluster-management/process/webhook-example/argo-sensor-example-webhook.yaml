@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Sensor
 metadata:
-  name: ingress-sn
+  name: example-webhook-sn
 spec:
   template:
     serviceAccountName: kubernetes-workflow-operator-sa
