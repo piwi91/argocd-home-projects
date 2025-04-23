@@ -14,7 +14,7 @@ rules:
     verbs: ["create", "get", "list", "watch", "update", "patch", "delete"]
   - apiGroups: ["argoproj.io"]
     resources: ["workflowtaskresults"]
-    verbs: ["create", "get", "list"]
+    verbs: ["create", "get", "list", "update", "patch"]
   - apiGroups: ["argoproj.io"]
     resources: ["workflows/finalizers"]
     verbs: ["update"]
