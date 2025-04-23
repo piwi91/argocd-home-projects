@@ -12,6 +12,8 @@ spec:
     path: argo-events/cluster-management
     repoURL: https://github.com/piwi91/argocd-home-projects.git
     targetRevision: HEAD
+    directory:
+      recurse: true
   syncPolicy:
     syncOptions:
     - CreateNamespace=true
