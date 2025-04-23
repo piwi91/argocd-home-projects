@@ -39,7 +39,7 @@ spec:
                   - name: message
                 container:
                   image: chuanwen/cowsay:latest
-                  command: "/usr/games/fortune -a | /usr/games/cowsay"
+                  command: ["/usr/games/fortune -a | /usr/games/cowsay"]
                   args: ["{{ inputs.parameters.message }}"]
   - template:
       name: logging
