@@ -5,7 +5,7 @@ metadata:
   name: ingress-sn
 spec:
   template:
-    serviceAccountName: kubernetes-ingress-manager-sa
+    serviceAccountName: kubernetes-workflow-operator-sa
   dependencies:
   - name: service
     eventSourceName: ingress-es
@@ -56,6 +56,7 @@ spec:
             metadata:
               generateName: create-ingress-for-svc-
             spec:
+              serviceAccountName: kubernetes-ingress-manager-sa
               entrypoint: main
               templates:
               - name: main
