@@ -12,60 +12,64 @@ spec:
     eventName: ingress
     transform:
       jq: '.operation += if .type == "ADD" then "create" else if .type == "DELETE" then "delete" else "update" end end'
+      script: |-
+        if event.body.metadata.annotations["deploy-ingress-external"] == "true" then
+          event.body.metadata.annotations["traefik.ingress.kubernetes.io/router.middlewares"] = 'default-allow-local-only@kubernetescrd'
+        end
+        return event
+
   triggers:
-  - parameters:
-    - src:
-        dependencyName: service
-        dataKey: operation
-      dest: k8s.operation
-    template:
+  - template:
       name: ingress
       k8s:
         operation: create
         parameters:
         - src:
             dependencyName: service
-            dataKey: body.metadata.name
-          dest: metadata.name
-          operation: prepend
+            dataKey: operation
+          dest: spec.templates.0.steps.0.0.arguments.parameters.0.value
         - src:
             dependencyName: service
             dataKey: body.metadata.annotations.deploy-ingress-class
-          dest: spec.ingressClassName
+          dest: spec.templates.0.steps.0.0.arguments.parameters.1.value
         - src:
             dependencyName: service
             dataKey: body.metadata.annotations.deploy-ingress-host
-          dest: spec.rules.0.host
+          dest: spec.templates.0.steps.0.0.arguments.parameters.2.value
         - src:
             dependencyName: service
             dataKey: body.metadata.name
-          dest: spec.rules.0.http.paths.0.backend.service.name
+          dest: spec.templates.0.steps.0.0.arguments.parameters.3.value
         - src:
             dependencyName: service
             dataKey: body.spec.ports.0.port
             useRawData: true
-          dest: spec.rules.0.http.paths.0.backend.service.port.number
+          dest: spec.templates.0.steps.0.0.arguments.parameters.4.value
+        - src:
+            dependencyName: service
+            dataKey: body.metadata.annotations
+          dest: spec.templates.0.steps.0.0.arguments.parameters.5.value
         source:
           resource:
-            apiVersion: networking.k8s.io/v1
-            kind: Ingress
+            apiVersion: argoproj.io/v1alpha1
+            kind: Workflow
             metadata:
-              name: -ing
-              namespace: argo-events-cluster-management
+              generateName: create-ingress-for-svc-
             spec:
-              ingressClassName: __WILL_BE_REPLACED__
-              rules:
-              - host: __WILL_BE_REPLACED__
-                http:
-                  paths:
-                  - path: /
-                    pathType: Prefix
-                    backend:
-                      service:
-                        name: __WILL_BE_REPLACED__
-                        port:
-                          number: __WILL_BE_REPLACED__
-  - template:
-      name: logging
-      log:
-        intervalSeconds: 15
+              entrypoint: main
+              templates:
+              - name: main
+                steps:
+                - - name: apply-ingress-template
+                    templateRef:
+                      name: manage-ingress
+                      template: apply-ingress-template
+                    arguments:
+                      parameters:
+                      - name: operation
+                      - name: ingressClassName
+                      - name: host
+                      - name: serviceName
+                      - name: servicePort
+                      - name: annotations
+                        value: "{}"

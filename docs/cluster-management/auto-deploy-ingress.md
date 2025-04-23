@@ -5,5 +5,5 @@
 ```
 deploy-ingress-host=yourdomain.com
 deploy-ingress-class=traefik
-deploy-ingress-external=false
+deploy-ingress-external="false"
 ```

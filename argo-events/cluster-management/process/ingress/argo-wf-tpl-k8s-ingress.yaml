@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: inputsTemplate
+metadata:
+  name: manage-ingress
+spec:
+  templates:
+  - name: apply-ingress-template
+    inputs:
+      arguments:
+        parameters:
+        - name: operation
+          value: create
+        - name: ingressClassName
+          value: traefik
+        - name: host
+        - name: serviceName
+        - name: servicePort
+        - name: annotations
+          value: "{}"
+    resource:
+      action: {{ inputs.parameters.operation }}
+      manifest: |
+        apiVersion: networking.k8s.io/v1
+        kind: Ingress
+        metadata:
+          name: {{ inputs.parameters.serviceName }}-ing
+          annotations: {{ inputs.parameters.annotations }}
+        spec:
+          ingressClassName: {{ inputs.parameters.ingressClassName }}
+          rules:
+          - host: {{ inputs.parameters.host }}
+            http:
+              paths:
+              - path: /
+                pathType: Prefix
+                backend:
+                  service:
+                    name: {{ inputs.parameters.serviceName }}
+                    port:
+                      number: {{ inputs.parameters.servicePort }}
