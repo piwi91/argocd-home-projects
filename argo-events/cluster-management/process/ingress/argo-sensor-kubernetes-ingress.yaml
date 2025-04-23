@@ -13,7 +13,7 @@ spec:
     transform:
       jq: '.operation += if .type == "ADD" then "create" else if .type == "DELETE" then "delete" else "update" end end'
       script: |-
-        if event.body.metadata.annotations["deploy-ingress-external"] == "true" then
+        if event.body.metadata.annotations["deploy-ingress-external"] != "true" then
           event.body.metadata.annotations["traefik.ingress.kubernetes.io/router.middlewares"] = 'default-allow-local-only@kubernetescrd'
         end
         return event
@@ -72,4 +72,3 @@ spec:
                       - name: serviceName
                       - name: servicePort
                       - name: annotations
-                        value: "{}"
