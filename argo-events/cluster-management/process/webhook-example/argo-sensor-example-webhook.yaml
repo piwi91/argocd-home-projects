@@ -1,0 +1,48 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: ingress-sn
+spec:
+  template:
+    serviceAccountName: kubernetes-workflow-operator-sa
+  dependencies:
+    - name: test-dep
+      eventSourceName: webhook
+      eventName: simple
+  triggers:
+  - parameters:
+      - src:
+          dependencyName: test-dep
+          dataKey: body
+        dest: spec.arguments.parameters.0.value
+    template:
+      name: webhook-workflow-trigger
+      k8s:
+        operation: create
+        source:
+          resource:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Workflow
+            metadata:
+              generateName: webhook-
+            spec:
+              entrypoint: whalesay
+              serviceAccountName: kubernetes-workflow-operator-sa
+              arguments:
+                parameters:
+                - name: message
+                  value: __WILL_BE_REPLACED__
+              templates:
+              - name: whalesay
+                inputs:
+                  parameters:
+                  - name: message
+                container:
+                  image: alpine:latest
+                  command: ["/bin/sh", "-c"]
+                  args: ["echo {{ inputs.parameters.message }}"]
+  - template:
+      name: logging
+      log:
+        intervalSeconds: 15
