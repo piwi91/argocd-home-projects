@@ -14,7 +14,7 @@ spec:
       script: |-
         if event.operation == "ADD" then
           event.operation = "create"
-        elseif event.operation == "DELETE"
+        elseif event.operation == "DELETE" then
           event.operation = "delete"
         else
           event.operation = "update"
