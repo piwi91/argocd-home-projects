@@ -11,15 +11,15 @@ spec:
       eventSourceName: webhook-es
       eventName: simple
   triggers:
-  - parameters:
-      - src:
-          dependencyName: test-dep
-          dataKey: body
-        dest: spec.arguments.parameters.0.value
-    template:
+  - template:
       name: webhook-workflow-trigger
       k8s:
         operation: create
+        parameters:
+          - src:
+              dependencyName: test-dep
+              dataKey: body
+            dest: spec.arguments.parameters.0.value
         source:
           resource:
             apiVersion: argoproj.io/v1alpha1
@@ -28,7 +28,6 @@ spec:
               generateName: webhook-
             spec:
               entrypoint: whalesay
-              serviceAccountName: kubernetes-workflow-operator-sa
               arguments:
                 parameters:
                 - name: message
@@ -39,9 +38,9 @@ spec:
                   parameters:
                   - name: message
                 container:
-                  image: alpine:latest
-                  command: ["/bin/sh", "-c"]
-                  args: ["echo {{ inputs.parameters.message }}"]
+                  image: docker/whalesay:latest
+                  command: [cowsay]
+                  args: ["{{ inputs.parameters.message }}"]
   - template:
       name: logging
       log:
