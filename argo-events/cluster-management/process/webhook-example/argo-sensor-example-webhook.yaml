@@ -38,7 +38,7 @@ spec:
                   parameters:
                   - name: message
                 container:
-                  image: docker/whalesay:latest
+                  image: chuanwen/cowsay:latest
                   command: [cowsay]
                   args: ["{{ inputs.parameters.message }}"]
   - template:
