@@ -11,7 +11,7 @@ resources:
 - base/argocd-applications.yaml
 - base/argocd-dex-argo-workflow-sso-secret.json
 - base/argocd-github-app-secret.json
-- https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+- https://raw.githubusercontent.com/argoproj/argo-cd/v3.1.0/manifests/install.yaml
 
 patches:
 - path: overlays/argocd-cm.yaml
@@ -21,4 +21,4 @@ patches:
 
 images:
 - name: quay.io/argoproj/argocd
-  newTag: v2.14.6
+  newTag: v3.1.0
