@@ -1,0 +1,60 @@
+# Base configuration shared across all environments
+app:
+  title: Backstage Developer Portal
+  organization:
+    name: Pim Widdershoven
+  baseUrl: https://backstage.brandt.widdershoven.nl
+
+backend:
+  baseurl: https://backstage.brandt.widdershoven.nl
+  listen:
+    port: 7007
+  cors:
+    origin: https://backstage.brandt.widdershoven.nl
+    methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
+    credentials: true
+  # database:
+  #   client: pg
+  #   connection:
+  #     host: ${POSTGRES_HOST}
+  #     port: ${POSTGRES_PORT}
+  #     user: ${POSTGRES_USER}
+  #     password: ${POSTGRES_PASSWORD}
+  #     ssl:
+  #       require: false
+  #       rejectUnauthorized: false
+
+auth:
+  environment: development
+  providers:
+    github:
+      development:
+        clientId: ${GITHUB_CLIENT_ID}
+        clientSecret: ${GITHUB_CLIENT_SECRET}
+
+integrations:
+  github:
+    - host: github.com
+      token: ${GITHUB_TOKEN}
+
+catalog:
+  import:
+    entityFilename: catalog-info.yaml
+    pullRequestBranchName: backstage-integration
+  rules:
+    - allow: [Component, System, API, Resource, Location]
+  locations:
+    - type: file
+      target: ../../examples/entities.yaml
+
+kubernetes:
+  serviceLocatorMethod:
+    type: 'multiTenant'
+  clusterLocatorMethods:
+    - type: 'config'
+      clusters:
+        - url: https://kubernetes.default.svc
+          name: local-cluster
+          authProvider: 'serviceAccount'
+          skipTLSVerify: true
+          skipMetricsLookup: false
