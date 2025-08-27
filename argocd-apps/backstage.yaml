@@ -46,9 +46,9 @@ spec:
           - CreateNamespace=true
           - PruneLast=true
           - RespectIgnoreDifferences=true
-        {{- if .autoSync }}
+        # {{- if .autoSync }}
         automated:
           selfHeal: {{ .selfHeal }}
           prune: {{ .prune }}
-        {{- end }}
+        # {{- end }}
       revisionHistoryLimit: 10
