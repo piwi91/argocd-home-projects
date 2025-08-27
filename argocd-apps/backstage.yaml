@@ -23,32 +23,32 @@ spec:
           #   prune: false
   template:
     metadata:
-      name: 'backstage-{{env}}'
+      name: 'backstage-{{ .env }}'
       labels:
-        environment: '{{env}}'
+        environment: '{{ .env }}'
         app.kubernetes.io/name: backstage
       annotations:
-        argocd.argoproj.io/sync-policy: '{{#autoSync}}automated{{/autoSync}}{{^autoSync}}none{{/autoSync}}'
+        argocd.argoproj.io/sync-policy: '{{ if .autoSync -}}automated{{- else -}}none{{- end}}'
     spec:
       project: default
       source:
         repoURL: https://github.com/piwi91/argocd-home-projects.git
         targetRevision: HEAD
-        path: '{{repoPath}}'
+        path: '{{ .repoPath }}'
         kustomize:
           images:
-            - 'ghcr.io/piwi91/backstage:{{imageTag}}'
+            - 'ghcr.io/piwi91/backstage:{{ .imageTag }}'
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{namespace}}'
+        namespace: '{{ .namespace }}'
       syncPolicy:
         syncOptions:
           - CreateNamespace=true
           - PruneLast=true
           - RespectIgnoreDifferences=true
-        {{#autoSync}}
+        {{- if .autoSync -}}
         automated:
-          selfHeal: {{selfHeal}}
-          prune: {{prune}}
-        {{/autoSync}}
+          selfHeal: {{ .selfHeal }}
+          prune: {{ .prune }}
+        {{- end -}}
       revisionHistoryLimit: 10
