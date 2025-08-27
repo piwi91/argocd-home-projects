@@ -1,0 +1,49 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: backstage-dev
+
+resources:
+  - ../../base
+  - traefik-ingressroute.yaml
+  - sealed-secrets/ghcr-secret.json
+  - sealed-secrets/sealed-dev-backstage-secret.yaml
+
+# Development-specific secrets
+configMapGenerator:
+  - name: backstage-config
+    files:
+      - app-config.yaml=app-config-dev.yaml
+    options:
+      disableNameSuffixHash: false
+    behavior: replace
+
+secretGenerator:
+  - name: backstage-secret
+    type: Opaque
+    # might be used during initial generation of Secrets
+    # env: secrets/backstage-secret.env
+
+patchesStrategicMerge:
+  - deployment-patch.yaml
+  - certificate-patch.yaml
+
+images:
+  - name: backstage
+    newName: ghcr.io/piwi91/backstage
+    newTag: main-latest  # Use latest builds for dev
+
+# Development-specific labels
+commonLabels:
+  app.kubernetes.io/name: backstage
+  app.kubernetes.io/component: backend
+  app.kubernetes.io/part-of: backstage-dev
+  environment: development
+
+# Name prefix for development resources
+namePrefix: dev-
+
+# Development-specific annotations
+commonAnnotations:
+  deployment.kubernetes.io/revision: "dev"
+  backstage.io/environment: "development"

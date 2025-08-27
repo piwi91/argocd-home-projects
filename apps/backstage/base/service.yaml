@@ -3,7 +3,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: backstage
-  namespace: backstage
   labels:
     app: backstage
     tier: backend

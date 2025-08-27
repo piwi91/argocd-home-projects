@@ -1,32 +1,12 @@
 ---
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: http-to-https-redirect
-spec:
-  redirectScheme:
-    scheme: https
-    permanent: true
----
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: allow-local-only
-spec:
-  ipWhiteList:
-    sourceRange:
-      - 127.0.0.1/32
-      - 192.168.1.0/24
----
+# Development-specific ingress configuration
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: backstage-http-redirect
 spec:
-  entryPoints:
-    - web
   routes:
-    - match: Host(`backstage.brandt.widdershoven.nl`)
+    - match: Host(`backstage-dev.brandt.widdershoven.nl`)
       kind: Rule
       services:
         - kind: TraefikService
@@ -40,11 +20,9 @@ kind: IngressRoute
 metadata:
   name: backstage
 spec:
-  entryPoints:
-    - websecure
   routes:
     - kind: Rule
-      match: Host(`backstage.brandt.widdershoven.nl`)
+      match: Host(`backstage-dev.brandt.widdershoven.nl`)
       priority: 10
       services:
         - name: backstage
@@ -54,4 +32,4 @@ spec:
         - name: allow-local-only
         - name: http-to-https-redirect
   tls:
-    secretName: backstage-tls
+    secretName: backstage-dev-tls

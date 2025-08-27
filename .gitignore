@@ -1,0 +1,5 @@
+# Prevent that secrets get exposed by accident
+.sealed-secrets
+*.env
+*-secret.yaml
+!sealed-*.yaml

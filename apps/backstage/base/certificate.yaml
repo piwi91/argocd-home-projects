@@ -8,5 +8,4 @@ spec:
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
-  dnsNames:
-    - backstage.brandt.widdershoven.nl
+  dnsNames: [] # dnsNames will be overridden by overlays

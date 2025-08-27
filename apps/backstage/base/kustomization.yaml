@@ -1,0 +1,27 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - deployment.yaml
+  - service.yaml
+  - certificate.yaml
+  - traefik-middleware.yaml
+
+configurations:
+  - configuration/sealed-secret-config.yaml
+
+configMapGenerator:
+  - name: backstage-config
+    files:
+      - app-config.yaml
+    options:
+      disableNameSuffixHash: false
+
+commonLabels:
+  app.kubernetes.io/name: backstage
+  app.kubernetes.io/component: backend
+
+images:
+  - name: backstage
+    newName: ghcr.io/piwi91/backstage
+    # newTag will be overridden by overlays

@@ -1,0 +1,62 @@
+# Development environment configuration
+app:
+  title: Backstage Developer Portal (DEV)
+  baseUrl: https://backstage-dev.brandt.widdershoven.nl
+
+backend:
+  baseUrl: https://backstage-dev.brandt.widdershoven.nl
+  listen:
+    port: 7007
+  cors:
+    origin: https://backstage-dev.brandt.widdershoven.nl
+    methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
+    credentials: true
+  # Development database (if different)
+  # database:
+  #   client: pg
+  #   connection:
+  #     host: ${POSTGRES_HOST_DEV}
+  #     port: ${POSTGRES_PORT}
+  #     user: ${POSTGRES_USER}
+  #     password: ${POSTGRES_PASSWORD}
+
+auth:
+  environment: development
+  providers:
+    github:
+      development:
+        clientId: ${GITHUB_CLIENT_ID_DEV}
+        clientSecret: ${GITHUB_CLIENT_SECRET_DEV}
+        signIn:
+          resolvers:
+            - resolver: usernameMatchingUserEntityName
+
+integrations:
+  github:
+    - host: github.com
+      token: ${GITHUB_TOKEN_DEV}
+
+catalog:
+  import:
+    entityFilename: catalog-info.yaml
+    pullRequestBranchName: backstage-integration-dev
+  rules:
+    - allow: [Component, System, API, Resource, Location]
+  locations:
+    - type: file
+      target: ../../examples/entities.yaml
+    # Additional dev-specific catalog locations
+    # - type: url
+    #   target: https://github.com/piwi91/argocd-home-projects/blob/main/catalog-info-dev.yaml
+
+kubernetes:
+  serviceLocatorMethod:
+    type: 'multiTenant'
+  clusterLocatorMethods:
+    - type: 'config'
+      clusters:
+        - url: https://kubernetes.default.svc
+          name: dev-cluster
+          authProvider: 'serviceAccount'
+          skipTLSVerify: true
+          skipMetricsLookup: false

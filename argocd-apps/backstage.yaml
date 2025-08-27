@@ -1,19 +1,54 @@
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: ApplicationSet
 metadata:
-  name: backstage
+  name: backstage-environments
   namespace: argocd
 spec:
-  destination:
-    namespace: backstage
-    server: https://kubernetes.default.svc
-  project: default
-  source:
-    path: apps/backstage
-    repoURL: https://github.com/piwi91/argocd-home-projects.git
-    targetRevision: HEAD
-  syncPolicy:
-    syncOptions:
-      - CreateNamespace=true
-    automated:
-      selfHeal: true
+  generators:
+    - list:
+        elements:
+          - env: development
+            namespace: backstage-dev
+            repoPath: apps/backstage/overlays/development
+            imageTag: main-latest
+            autoSync: true
+            selfHeal: true
+            prune: true
+          # - env: production
+          #   namespace: backstage
+          #   repoPath: apps/backstage/overlays/production
+          #   imageTag: main-c1caff9
+          #   autoSync: false
+          #   selfHeal: false
+          #   prune: false
+  template:
+    metadata:
+      name: 'backstage-{{env}}'
+      labels:
+        environment: '{{env}}'
+        app.kubernetes.io/name: backstage
+      annotations:
+        argocd.argoproj.io/sync-policy: '{{#autoSync}}automated{{/autoSync}}{{^autoSync}}none{{/autoSync}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/piwi91/argocd-home-projects.git
+        targetRevision: HEAD
+        path: '{{repoPath}}'
+        kustomize:
+          images:
+            - 'ghcr.io/piwi91/backstage:{{imageTag}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+          - PruneLast=true
+          - RespectIgnoreDifferences=true
+        {{#autoSync}}
+        automated:
+          selfHeal: {{selfHeal}}
+          prune: {{prune}}
+        {{/autoSync}}
+      revisionHistoryLimit: 10
