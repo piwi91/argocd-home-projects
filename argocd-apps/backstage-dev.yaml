@@ -20,9 +20,9 @@ spec:
         - 'ghcr.io/piwi91/backstage:main-latest'
   syncPolicy:
     syncOptions:
-    - CreateNamespace=true
-          - PruneLast=true
-          - RespectIgnoreDifferences=true
+      - CreateNamespace=true
+      - PruneLast=true
+      - RespectIgnoreDifferences=true
     automated:
       selfHeal: true
       prune: true
