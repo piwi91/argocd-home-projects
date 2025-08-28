@@ -28,11 +28,6 @@ secretGenerator:
     # might be used during initial generation of Secrets
     # env: secrets/ghcr-secret.env
 
-generatorOptions:
-  annotations:
-    sealedsecrets.bitnami.com/managed: "true"
-    sealedsecrets.bitnami.com/namespace-wide: "true"
-
 patchesStrategicMerge:
   - deployment-patch.yaml
   - certificate-patch.yaml
@@ -40,7 +35,7 @@ patchesStrategicMerge:
 images:
   - name: backstage
     newName: ghcr.io/piwi91/backstage
-    newTag: main-latest  # Use latest builds for dev
+    newTag: latest  # Use latest builds for dev
 
 # Development-specific labels
 commonLabels:
