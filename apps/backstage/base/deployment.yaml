@@ -19,7 +19,7 @@ spec:
       # serviceAccountName: backstage
       containers:
         - name: backstage
-          image: backstage # Will be replaced by kustomization
+          image: backstage
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -28,11 +28,6 @@ spec:
           env:
             - name: NODE_ENV
               value: "production"
-          # envFrom:
-          #   - secretRef:
-          #       name: postgres-secrets
-          #   - secretRef:
-          #       name: backstage-secrets
           volumeMounts:
             - name: app-config
               mountPath: /app/app-config.production.yaml

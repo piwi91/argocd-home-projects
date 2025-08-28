@@ -15,6 +15,9 @@ spec:
               value: "development"
             - name: LOG_LEVEL
               value: "debug"
+          envFrom:
+            - secretRef:
+                name: backstage-secrets
           resources:
             requests:
               memory: "256Mi"
