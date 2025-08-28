@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: backstage-dev
+  namespace: argocd
+  labels:
+    environment: 'development'
+    app.kubernetes.io/name: backstage
+spec:
+  destination:
+    namespace: backstage-dev
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: apps/backstage/overlays/development
+    repoURL: https://github.com/piwi91/argocd-home-projects.git
+    targetRevision: HEAD
+    kustomize:
+      images:
+        - 'ghcr.io/piwi91/backstage:main-latest'
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+          - PruneLast=true
+          - RespectIgnoreDifferences=true
+    automated:
+      selfHeal: true
+      prune: true
+  revisionHistoryLimit: 10
