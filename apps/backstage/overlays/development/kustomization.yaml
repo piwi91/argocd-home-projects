@@ -6,8 +6,8 @@ namespace: backstage-dev
 resources:
   - ../../base
   - traefik-ingressroute.yaml
-  - sealed-secrets/ghcr-secret.json
   - sealed-secrets/sealed-dev-backstage-secret.yaml
+  - sealed-secrets/sealed-dev-ghcr-secret.yaml
 
 # Development-specific secrets
 configMapGenerator:
@@ -23,6 +23,10 @@ secretGenerator:
     type: Opaque
     # might be used during initial generation of Secrets
     # env: secrets/backstage-secret.env
+  - name: ghcr-secret
+    type: kubernetes.io/dockerconfigjson
+    # might be used during initial generation of Secrets
+    # env: secrets/ghcr-secret.env
 
 patchesStrategicMerge:
   - deployment-patch.yaml
