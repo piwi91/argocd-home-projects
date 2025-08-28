@@ -15,6 +15,10 @@ spec:
   syncPolicy:
     automated:
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - PruneLast=true
+      - RespectIgnoreDifferences=true
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -33,3 +37,7 @@ spec:
   syncPolicy:
     automated:
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - PruneLast=true
+      - RespectIgnoreDifferences=true
