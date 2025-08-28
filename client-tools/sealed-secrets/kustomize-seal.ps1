@@ -19,6 +19,17 @@ if (!(Test-Path $outputDir)) {
     New-Item -ItemType Directory -Path $outputDir | Out-Null
 }
 
+$kustomizationYamlPath = "$BaseDir\kustomization.yaml"
+$kustomizationBackupPath = "$kustomizationYamlPath.bak"
+# Make a backup of kustomization.yaml
+Copy-Item -Path $kustomizationYamlPath -Destination $kustomizationBackupPath -Force
+# Get content of kustomization.yaml
+$kustomizationFile = Get-Content $kustomizationYamlPath -Raw
+# Re-enable secrets environment files
+$kustomizationFile = $kustomizationFile -replace "# env: secrets", "env: secrets"
+# Write to disk
+Set-Content -Path $kustomizationYamlPath -Value $kustomizationFile
+
 # Get all YAML from kustomize
 $allYamls = kubectl kustomize $baseDir | Out-String
 
@@ -55,5 +66,10 @@ foreach ($doc in $yamlDocs) {
         Remove-Item $tempSecretFile
     }
 }
+
+# Recover original kustomization.yaml
+Copy-Item -Path $kustomizationBackupPath -Destination $kustomizationYamlPath -Force
+# Remove backup file
+Remove-Item $kustomizationBackupPath
 
 Write-Host "SealedSecrets created; update kustomization.yaml manually."

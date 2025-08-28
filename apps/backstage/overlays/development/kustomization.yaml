@@ -6,8 +6,8 @@ namespace: backstage-dev
 resources:
   - ../../base
   - traefik-ingressroute.yaml
-  - sealed-secrets/sealed-dev-backstage-secret.yaml
-  - sealed-secrets/sealed-dev-ghcr-secret.yaml
+  - sealed-secrets/sealed-backstage-secret.yaml
+  - sealed-secrets/sealed-ghcr-secret.yaml
 
 # Development-specific secrets
 configMapGenerator:
@@ -43,9 +43,6 @@ commonLabels:
   app.kubernetes.io/component: backend
   app.kubernetes.io/part-of: backstage-dev
   environment: development
-
-# Name prefix for development resources
-namePrefix: dev-
 
 # Development-specific annotations
 commonAnnotations:

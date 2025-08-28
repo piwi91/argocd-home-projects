@@ -16,8 +16,6 @@ spec:
       labels:
         app: backstage
     spec:
-      imagePullSecrets:
-        - name: ghcr-secret
       # serviceAccountName: backstage
       containers:
         - name: backstage
