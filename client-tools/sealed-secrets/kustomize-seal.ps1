@@ -48,9 +48,9 @@ foreach ($doc in $yamlDocs) {
 
         $sealedSecretFile = "$outputDir\sealed-$secretName.yaml"
         if (![string]::IsNullOrWhiteSpace($certPath)) {
-            kubeseal --format yaml --cert $certPath -f $tempSecretFile | Out-File -FilePath $sealedSecretFile -Encoding utf8
+            kubeseal --scope cluster-wide --format yaml --cert $certPath -f $tempSecretFile | Out-File -FilePath $sealedSecretFile -Encoding utf8
         } else {
-            kubeseal --format yaml -f $tempSecretFile | Out-File -FilePath $sealedSecretFile -Encoding utf8
+            kubeseal --scope cluster-wide --format yaml -f $tempSecretFile | Out-File -FilePath $sealedSecretFile -Encoding utf8
         }
         Remove-Item $tempSecretFile
     }

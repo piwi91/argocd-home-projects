@@ -23,5 +23,6 @@ Note: Comment out files in the secrets generator (or comment out any non-sealed 
 Example:
 
 ```
-'.\client-tools\sealed-secrets\kustomize-seal.ps1' -BaseDir "apps/backstage/overlays/development"
+. '.\client-tools\sealed-secrets\kustomize-seal.ps1' -BaseDir "apps/backstage/overlays/development"
 ```
+
