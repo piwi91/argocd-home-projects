@@ -20,8 +20,3 @@ configMapGenerator:
 commonLabels:
   app.kubernetes.io/name: backstage
   app.kubernetes.io/component: backend
-
-images:
-  - name: backstage
-    newName: ghcr.io/piwi91/backstage
-    # newTag will be overridden by overlays
