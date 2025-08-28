@@ -28,6 +28,11 @@ secretGenerator:
     # might be used during initial generation of Secrets
     # env: secrets/ghcr-secret.env
 
+generatorOptions:
+  annotations:
+    sealedsecrets.bitnami.com/managed: "true"
+    sealedsecrets.bitnami.com/namespace-wide: "true"
+
 patchesStrategicMerge:
   - deployment-patch.yaml
   - certificate-patch.yaml
