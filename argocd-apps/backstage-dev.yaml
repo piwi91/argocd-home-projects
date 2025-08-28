@@ -17,7 +17,7 @@ spec:
     targetRevision: HEAD
     kustomize:
       images:
-        - 'ghcr.io/piwi91/backstage:main-latest'
+        - 'ghcr.io/piwi91/backstage:latest'
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
