@@ -17,7 +17,7 @@ spec:
               value: "debug"
           envFrom:
             - secretRef:
-                name: backstage-secrets
+                name: backstage-secret
           resources:
             requests:
               memory: "256Mi"
